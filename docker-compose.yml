@@ -1,0 +1,28 @@
+# mandatory
+version: '3.7'
+
+# services = container
+services:
+  # docker run -it --rm -e PORT=8083 -e MYSQL_CONN_STRING="root@tcp(mariadb-orchestration:3306)/hello_world?parseTime=true" --network first-app-network -p 8083:8083 first-app-image:v2
+  services-hello-world:
+    build: ./hello-world/
+    environment:
+      - PORT=8083
+      - MYSQL_CONN_STRING=root@tcp(orchestrator_services-mariadb_1:3306)/hello_world?parseTime=true
+    ports:
+      - 8083:8083
+    networks:
+      - first-app-network
+  # docker run -it --name mariadb-orchestration -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -v /home/itis00/Belajar/Docker/mariadb-databases:/var/lib/mysql --network first-app-network -p 3306:3306 mariadb      # 
+  services-mariadb:
+    image: mariadb:latest
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - 3306:3306
+    volumes:
+      - /home/itis00/Belajar/Docker/mariadb-databases:/var/lib/mysql
+    networks:
+      - first-app-network
+networks:
+  first-app-network:
