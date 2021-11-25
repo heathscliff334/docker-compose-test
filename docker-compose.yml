@@ -13,13 +13,18 @@ services:
       - 8083:8083
     networks:
       - first-app-network
+    # to make hello world run after db service up
+    depends_on:
+      - orchestrator_services-mariadb_1
+      # - service_2
+      # - service_3
   # docker run -it --name mariadb-orchestration -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -v /home/itis00/Belajar/Docker/mariadb-databases:/var/lib/mysql --network first-app-network -p 3306:3306 mariadb      # 
   services-mariadb:
     image: mariadb:latest
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
     ports:
-      - 3306:3306
+      - 3306
     volumes:
       - /home/itis00/Belajar/Docker/mariadb-databases:/var/lib/mysql
     networks:
